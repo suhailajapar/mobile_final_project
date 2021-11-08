@@ -32,12 +32,12 @@ class SignInState extends State<SignIn> {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: Center(
-          child: BlocBuilder<SignInCubit, String>(
-            bloc: context.read<SignInCubit>(),
-            builder: (context, state) {
-              return Center(
-                child: Container(
+        child: SingleChildScrollView(
+          child: Center(
+            child: BlocBuilder<SignInCubit, String>(
+              bloc: context.read<SignInCubit>(),
+              builder: (context, state) {
+                return Container(
                   width: 500,
                   margin: const EdgeInsets.only(top: 20),
                   child: Column(
@@ -101,10 +101,10 @@ class SignInState extends State<SignIn> {
                       ),
                     ]
                   ),
-                ),
-              );
-            }
-          ) 
+                );
+              }
+            ) 
+          ),
         ),
       ),
     );

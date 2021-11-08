@@ -41,6 +41,11 @@ class HomePageState extends State<HomePage> {
     _getPosts();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void onUnfavourite(id) {
     setState(() {
       _favPost = _favPost.where((i) => i != id).toList();
@@ -61,7 +66,7 @@ class HomePageState extends State<HomePage> {
       ),
       body: SafeArea(
         child: Container(
-          color: Colors.amber[100],
+          color: Colors.amber[50],
           child: Center(
             child: Column(
               children: [
@@ -88,140 +93,153 @@ class HomePageState extends State<HomePage> {
                   ),
 
                 Expanded(
-                  child: ListView.builder(
-                    reverse: _newOld,
-                    itemCount: _posts.length,
-                    itemBuilder: (context, index) {
+                  child: RefreshIndicator(
+                    onRefresh: () {
+                      return Future.delayed(
+                        Duration(seconds: 1),
+                        () {
+                          setState(() {});
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: const Text('Page refreshed')),
+                          );
+                        } 
+                      );
+                    },
+                    child: ListView.builder(
+                      reverse: _newOld,
+                      itemCount: _posts.length,
+                      itemBuilder: (context, index) {
 
-                      bool isFavorited = _favPost.contains(_posts[index]['_id']);
+                        bool isFavorited = _favPost.contains(_posts[index]['_id']);
 
-                      return Card(
-                        margin: const EdgeInsets.fromLTRB(10,5,10,5),
-                          child: InkWell(
-                            borderRadius: const BorderRadius.all(Radius.circular(5)),
-                            hoverColor: Colors.yellow[50],
+                        return Card(
+                          margin: const EdgeInsets.fromLTRB(10,5,10,5),
+                            child: InkWell(
+                              borderRadius: const BorderRadius.all(Radius.circular(5)),
+                              hoverColor: Colors.yellow[50],
 
-                            // to post Detail page.
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => DetailScreen(
-                                    postDetail: _posts[index],
-                                    onUnfavorite: onUnfavourite,
-                                    onFavorite: onFavorite,
-                                    favPost: _favPost,
-                                  )
-                                ),
-                              );
-                            },
-
-                            child: Container(
-                              height: 130,
-                              child: Row(
-                                children: <Widget>[
-
-                                  //For Image
-                                  Container(
-                                    margin: const EdgeInsets.fromLTRB(10,10,20,10),
-                                    width: 120,
-                                    height: 120,
-                                    decoration: BoxDecoration(
-                                      image: const DecorationImage(
-                                        image: NetworkImage(
-                                          "https://dummyimage.com/120x120/ffbc2e/fff&text=BeSquaGram"
-                                        ),
-                                      fit: BoxFit.cover
-                                      ),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
-                                      child: Image.network(
-                                        "${_posts[index]["image"]}", 
-                                        errorBuilder: (_1,_2,_3) {return const SizedBox.shrink();},
-                                        fit: BoxFit.fill
-                                      ),
+                              // to post Detail page.
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => DetailScreen(
+                                      postDetail: _posts[index],
+                                      onUnfavorite: onUnfavourite,
+                                      onFavorite: onFavorite,
+                                      favPost: _favPost,
                                     )
                                   ),
+                                );
+                              },
 
-                                  // For user details
-                                  Expanded(
-                                    child: Container(
-                                      margin: const EdgeInsets.fromLTRB(0,10,0,10),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Container(
-                                            margin: const EdgeInsets.only(bottom: 10),
-                                            child: Text(
-                                              _posts[index]["title"],
-                                              maxLines: 1,
-                                              style: const TextStyle(fontSize: 20),
-                                            ),
+                              child: Container(
+                                height: 130,
+                                child: Row(
+                                  children: <Widget>[
+
+                                    //For Image
+                                    Container(
+                                      margin: const EdgeInsets.fromLTRB(10,10,20,10),
+                                      width: 120,
+                                      height: 120,
+                                      decoration: BoxDecoration(
+                                        image: const DecorationImage(
+                                          image: NetworkImage(
+                                            "https://dummyimage.com/120x120/f7f7f7/fff&text=BeSquaGram"
                                           ),
-                                          SizedBox(
-                                            height: 50,
-                                            child: Text(
-                                              _posts[index]["description"],
-                                              maxLines: 3,
-                                              style: const TextStyle(fontSize: 14),
+                                        fit: BoxFit.cover
+                                        ),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: Image.network(
+                                          "${_posts[index]["image"]}", 
+                                          errorBuilder: (_1,_2,_3) {return const SizedBox.shrink();},
+                                          fit: BoxFit.fill
+                                        ),
+                                      )
+                                    ),
+
+                                    // For user details
+                                    Expanded(
+                                      child: Container(
+                                        margin: const EdgeInsets.fromLTRB(0,10,10,10),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Container(
+                                              margin: const EdgeInsets.only(bottom: 10),
+                                              child: Text(
+                                                _posts[index]["title"],
+                                                maxLines: 1,
+                                                style: const TextStyle(fontSize: 20),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 50,
+                                              child: Text(
+                                                _posts[index]["description"],
+                                                maxLines: 3,
+                                                style: const TextStyle(fontSize: 14),
+                                              )
+                                            ),
+                                            Container(
+                                              margin: const EdgeInsets.only(top: 10),
+                                              child: Text(
+                                                "${_posts[index]["date"]}",
+                                                style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+                                              ),
                                             )
-                                          ),
-                                          Container(
-                                            margin: const EdgeInsets.only(top: 10),
-                                            child: Text(
-                                              "${_posts[index]["date"]}",
-                                              style: const TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
-                                            ),
-                                          )
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
 
-                                  // For favorite & delete post
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
+                                    // For favorite & delete post
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
 
-                                      // to delete
-                                      IconButton(
-                                        onPressed: () {
-                                          widget.homeChannel.sink.add('{"type": "delete_post", "data": {"postId": "${_posts[index]['_id']}"}}');
-                                          print('ID: ${_posts[index]['_id']} is deleted ');
-                                          setState(() {
-                                            _posts.indexOf(_posts[index]);
-                                            _posts.removeAt(index);
-                                          });
-                                        },
-                                        icon: const Icon(Icons.delete_rounded)
-                                      ),
+                                        // to delete
+                                        IconButton(
+                                          onPressed: () {
+                                            widget.homeChannel.sink.add('{"type": "delete_post", "data": {"postId": "${_posts[index]['_id']}"}}');
+                                            print('ID: ${_posts[index]['_id']} is deleted ');
+                                            setState(() {
+                                              _posts.indexOf(_posts[index]);
+                                              _posts.removeAt(index);
+                                            });
+                                          },
+                                          icon: const Icon(Icons.delete_rounded)
+                                        ),
 
-                                      // to favorite & unfavorite
-                                      IconButton(
-                                        onPressed: (){
-                                          setState(() {
-                                            if (isFavorited) {
-                                              _favPost.remove(_posts[index]['_id']);
-                                            } else {
-                                              _favPost.add(_posts[index]['_id']);
-                                            }
-                                          });
-                                        }, 
-                                        icon: Icon(
-                                          isFavorited? Icons.favorite_rounded : Icons.favorite_border_rounded,
-                                          color: isFavorited ? Colors.red : null,
-                                        )
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                        // to favorite & unfavorite
+                                        IconButton(
+                                          onPressed: (){
+                                            setState(() {
+                                              if (isFavorited) {
+                                                _favPost.remove(_posts[index]['_id']);
+                                              } else {
+                                                _favPost.add(_posts[index]['_id']);
+                                              }
+                                            });
+                                          }, 
+                                          icon: Icon(
+                                            isFavorited? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                                            color: isFavorited ? Colors.red : null,
+                                          )
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                      );
-                    }
+                        );
+                      }
+                    ),
                   ),
                 ),
               ],
@@ -265,10 +283,5 @@ class HomePageState extends State<HomePage> {
       context,
       MaterialPageRoute(builder: (context) => CreatePostPage(createChannel: widget.homeChannel)),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }

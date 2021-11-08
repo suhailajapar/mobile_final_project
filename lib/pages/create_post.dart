@@ -43,89 +43,86 @@ class CreatePostPageState extends State<CreatePostPage> {
         title: const Text('Create New Post'),
       ),
       body: SafeArea(
-        child: Center(
-          child: Container(
-            margin: const EdgeInsets.only(top: 30),
-            width: 350,
-            child: Form(
-              child: Column(
-                children: [
+        child: SingleChildScrollView(
+          child: Center(
+            child: Container(
+              margin: const EdgeInsets.only(top: 30),
+              width: 350,
+              child: Form(
+                child: Column(
+                  children: [
 
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 8, 0, 10),
-                    width: 150,
-                    height: 150,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage('https://cdn-icons-png.flaticon.com/512/1027/1027530.png'),
-                        fit: BoxFit.cover
-                      )
-                    ),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: TextFormField(
-                      controller: _titleController,
-                      onChanged: (String value) => _title = value,
-                      decoration: const InputDecoration(
-                        isDense: true,
-                        border: OutlineInputBorder(),
-                        labelText: 'Title'
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(0, 8, 0, 10),
+                      width: 150,
+                      height: 150,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage('https://cdn-icons-png.flaticon.com/512/1027/1027530.png'),
+                          fit: BoxFit.cover
+                        )
                       ),
                     ),
-                  ),
 
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: TextFormField(
-                      controller: _descriptionController,
-                      onChanged: (String value) => _description = value,
-                      decoration: const InputDecoration(
-                        isDense: true,
-                        border: OutlineInputBorder(),
-                        labelText: 'Description'
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: TextFormField(
+                        controller: _titleController,
+                        onChanged: (String value) => _title = value,
+                        decoration: const InputDecoration(
+                          isDense: true,
+                          border: OutlineInputBorder(),
+                          labelText: 'Title'
+                        ),
                       ),
                     ),
-                  ),
 
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: TextFormField(
-                      controller: _imageURLController,
-                      onChanged: (String value) => _ImageURL = value,
-                      decoration: const InputDecoration(
-                        isDense: true,
-                        border: OutlineInputBorder(),
-                        labelText: 'Image URL'
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: TextFormField(
+                        controller: _descriptionController,
+                        onChanged: (String value) => _description = value,
+                        decoration: const InputDecoration(
+                          isDense: true,
+                          border: OutlineInputBorder(),
+                          labelText: 'Description'
+                        ),
                       ),
                     ),
-                  ),
 
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: const Size(350, 40)
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: TextFormField(
+                        controller: _imageURLController,
+                        onChanged: (String value) => _ImageURL = value,
+                        decoration: const InputDecoration(
+                          isDense: true,
+                          border: OutlineInputBorder(),
+                          labelText: 'Image URL'
+                        ),
                       ),
-                      onPressed: _createPost,
-                      child: const Text(
-                        'Create Post',
-                        style: TextStyle(fontSize: 16),
-                      )
                     ),
-                  ),
-                ],
-              )
-            ),
-          )
+
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: const Size(350, 40)
+                        ),
+                        onPressed: _createPost,
+                        child: const Text(
+                          'Create Post',
+                          style: TextStyle(fontSize: 16),
+                        )
+                      ),
+                    ),
+                  ],
+                )
+              ),
+            )
+          ),
         )
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _toHomePage,
-        child: const Icon(Icons.arrow_back_rounded, color: Colors.white,),
-        backgroundColor: Colors.black,
-      )
     );
   }
 

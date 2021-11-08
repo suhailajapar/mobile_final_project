@@ -23,7 +23,7 @@ class FavoritePageState extends State<FavoritePage> {
       ),
       body: SafeArea(
         child: Container(
-          color: Colors.amber[100],
+          color: Colors.amber[50],
           child: Center(
             child: ListView.builder(
               itemCount: widget.favoritePost.length,
