@@ -39,6 +39,14 @@ class _SettingState extends State<Setting> {
               Visibility(
                 child: Column(
                   children: <Widget>[
+
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(0, 8, 0, 10),
+                      width: 120,
+                      height: 120,
+                      child: Image.asset("asset/besquare_logo.png"),
+                    ),
+
                     const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Text(
